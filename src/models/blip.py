@@ -82,6 +82,19 @@ class BLIPSearchEngine:
         text_features = text_features.text_embeds_proj[:, 0, :]
         text_features /= text_features.norm(dim=-1, keepdim=True)
         return text_features
+    
+    def embedding_search(self, embedding, top_k: int) -> dict:
+        # Perform search in the index
+        scores, idx_image = self.index.search(embedding, 32 * top_k)
+        
+        # Process image indices
+        idx_image = np.floor(idx_image.flatten() / 32).astype(np.int64)
+        idx_image = top_k_unique_in_order(idx_image, top_k)
+        
+        # Retrieve image paths from index
+        image_paths = [self.id2image_fps.get(idx) for idx in idx_image]
+        
+        return result_format(image_paths, scores.flatten())
 
     def text_search(self, query_text: str, top_k: int):
         """

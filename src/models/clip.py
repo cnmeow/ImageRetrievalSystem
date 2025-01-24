@@ -80,6 +80,17 @@ class CLIPSearchEngine:
         text_features = self.model.encode_text(text_tokens)
         text_features = text_features / text_features.norm(dim=-1, keepdim=True)
         return text_features.cpu().detach().numpy().astype(np.float32)
+    
+    def embedding_search(self, embedding, top_k: int) -> dict:
+        # Perform the search using Faiss
+        scores, idx_image = self.index.search(embedding, top_k)
+        
+        # Get the image paths corresponding to the indices
+        idx_image = idx_image.flatten()
+        image_paths = [self.id2image_fps.get(idx) for idx in idx_image]
+        
+        # Return the search results in the desired format
+        return result_format(image_paths, scores.flatten())
 
     def text_search(self, query_text: str, top_k: int) -> dict:
         """
