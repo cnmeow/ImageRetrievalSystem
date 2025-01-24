@@ -94,18 +94,15 @@
 
 <body>
   <div>
-    <link href="static/index.css" rel="stylesheet" />
+    <link href="../static/index.css" rel="stylesheet" />
     <div id="divMain">
       <div class="divSearchTxt">
         <div id="divQueryAndControlTxt">
           <!-- Current scene Txt-->
           <div class="divQueryTxt">
-            <img src="static/logo_team.png" style="height: 50px; margin-right: 10px;" />
+            <img src="../static/logo_team.png" style="height: 50px; margin-right: 10px;" />
             <textarea placeholder="What are you looking for?" class="textarea inpQueryTxt enterToSearch"
               id="inpTxtCurrent"></textarea>
-            <button type="button" class="btnControl button" title="Search by voice" onclick="SearchByVoice(this)">
-              <i class="fa-solid fa-microphone"></i>
-            </button>
             <button type="button" class="btnControl button" title="Search by image" onclick="SearchByImage(this)">
               <i class="fa-solid fa-image"></i>
             </button>
@@ -117,7 +114,7 @@
             <button type="button" class="btnControl button" onclick="zoomframe(1, 1)" title="Zoom in result">
               <i class="fa-solid fa-magnifying-glass-plus"></i>
             </button>
-            <button type="button" class="btnSearch button" onclick="Search()" title="Search">
+            <button type="button" class="btnSearch button" onclick="Search(this)" title="Search">
               Search
             </button>
             {% if model_list[0] %}
@@ -161,7 +158,7 @@
     var frameWidth = 160,
       frameHeight = 103;
 
-    function txtQuery() {
+    function getSearchOption() {
       let useClip = document.getElementsByName('useclip')[0];
       if (useClip) {
         useClip = useClip.checked;
@@ -174,9 +171,8 @@
       if (useBeit) {
         useBeit = useBeit.checked;
       }
-      let queryCurrent = inpTxtCurrent.value;
       let topk = inpTopkTxt.value;
-      return [topk, queryCurrent, useClip, useBlip2, useBeit];
+      return [topk, useClip, useBlip2, useBeit];
     }
 
     /* Create div frame */
@@ -186,7 +182,7 @@
       let divFrame = `
   <div class="divFrame" title="${idFrame}" style="width: ${frameWidth}px; height: ${frameHeight}px;">
     <span class="txtIDFrame">${idFrame}</span>
-    <img src="../static/flickr30k/${filename}" class="imgFrame"/>
+    <img src="../static/flickr30k/images/${filename}" class="imgFrame"/>
   </div>
   `;
       return divFrame;
@@ -210,21 +206,20 @@
     }
 
     /* Click Search */
-    var btnSearch = document.getElementsByClassName('btnSearch');
-
-    function Search() {
-      let query = '';
-      query = txtQuery();
-      btnSearch[0].classList.add('btnclicked');
+    function Search(btnSearch) {
+      let query = getSearchOption();
+      query.push(inpTxtCurrent.value);
+      
+      btnSearch.classList.add('btnclicked');
       setTimeout(() => {
-        btnSearch[0].classList.remove('btnclicked');
+        btnSearch.classList.remove('btnclicked');
       }, 200);
       let querySearch = {
         'query': query
       };
       console.log(querySearch);
 
-      fetch('/process_query', {
+      fetch('/text_search', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -257,71 +252,46 @@
       }
     }
 
-    var onListen = false;
-    let mediaRecorder;
-    let audioChunks = [];
+    async function SearchByImage(btnSearch) { // user select image in their computer then post to 
+      btnSearch.classList.add('btnclicked');
+      setTimeout(() => {
+        btnSearch.classList.remove('btnclicked');
+      }, 200);
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*'; 
+      fileInput.style.display = 'none';
 
-    async function SearchByVoice(btnVoice) {
-  onListen = !onListen;
-
-  if (onListen) {
-    btnVoice.classList.add('btnclicked');
-    
-    try {
-      // Request access to the microphone
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-      // Initialize the MediaRecorder with the MediaStream
-      const mediaRecorder = new MediaRecorder(stream);
-      const audioChunks = [];
-
-      mediaRecorder.ondataavailable = event => {
-        audioChunks.push(event.data);
-      };
-
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-        
-        // Send the audio to Flask
+      fileInput.addEventListener('change', async () => {
+        const file = fileInput.files[0];
+        if (!file) {
+          alert('No file selected.');
+          return;
+        }
+        let searchOption = getSearchOption();
         const formData = new FormData();
-        formData.append("audio", audioBlob, "recording.wav");
+        formData.append('file', file);
+        formData.append('option', searchOption);
 
-        fetch('/speech_to_text', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Audio processed:', data);
-        })
-        .catch(error => {
-          console.error('Error uploading audio:', error);
+        fetch('/image_search', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            ResDict = {
+              ...data
+            };
+            displayRes();
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
         });
 
-        // Stop all tracks in the stream
-        stream.getTracks().forEach(track => track.stop());
-      };
-
-      // Start recording
-      mediaRecorder.start();
-
-      // Save references for stopping later
-      window.mediaRecorder = mediaRecorder;
-      window.stream = stream; // Save stream to stop it later
-    } catch (error) {
-      console.error('Error accessing the microphone:', error);
-      alert('Could not access the microphone. Please check your permissions.');
+      fileInput.click();
     }
-  } else {
-    btnVoice.classList.remove('btnclicked');
-    if (window.mediaRecorder) {
-      window.mediaRecorder.stop(); // Stop MediaRecorder
-    }
-    if (window.stream) {
-      window.stream.getTracks().forEach(track => track.stop()); // Stop MediaStream tracks
-    }
-  }
-}
 
   </script>
 </body>
