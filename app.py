@@ -2,6 +2,7 @@ from src.search import Searcher
 from flask import Flask, render_template, request, jsonify
 from io import BytesIO
 import speech_recognition as sr
+import gdown
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static'
@@ -15,6 +16,13 @@ okresponse = {
     'status': 'ok'
 }
 recognizer = sr.Recognizer()
+if not os.path.exists('images'):
+    gdown.download(id='1bsSEotd9qXZtefkxo4_XqnE-v4MrDL29', output='images.zip')
+    # unzip images.zip
+    import zipfile
+    with zipfile.ZipFile('images.zip', 'r') as zip_ref:
+        zip_ref.extractall('templates')
+        
 @app.route('/')
 def index():
     return render_template('index.html')
