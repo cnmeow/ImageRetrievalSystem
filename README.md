@@ -15,7 +15,7 @@
 
 ## Introduction
 
-This project aims to build a web application for retrieving relevant images based on textual descriptions, using some of the most powerful models such as CLIP, BLIP, BEIT. It supports two main query types:
+This project aims to build a Flask web application for retrieving relevant images based on textual descriptions, using some of the most powerful models such as CLIP, BLIP, BEIT. It supports two main query types:
 - Text: Search for relevant images based on text input
 - Image: Upload an image to find related textual descriptions.
 
@@ -42,7 +42,7 @@ By combining state-of-the-art deep learning models, the system ensures high accu
   - **BLIP**: Automatically generates captions for images.
   - **BEiT**: Provides robust image feature extraction.
 
-- **User-friendly Web Interface**:
+- **User-friendly Web Interface**: 
   - Upload an image or enter text to perform a search.
   - Displays query results in real-time.
   
