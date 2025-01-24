@@ -21,30 +21,6 @@ This project aims to build a Flask web application for retrieving relevant image
 
 By combining state-of-the-art deep learning models, the system ensures high accuracy and versatility for image-based search tasks.
 
-## Features
-
-- **Search by Text**: Enter a text query to retrieve relevant images from the database.  
-  Example: *"A baby girl is wearing a red hat"*.
-
-  <img width="1440" alt="image" src="https://github.com/user-attachments/assets/213634cb-3ff0-422a-af63-fb8c4a41e0f7" />
-
-- **Search by Image**: Upload an image to retrieve related text descriptions, captions, or tags.
-  ![image](https://github.com/user-attachments/assets/d95c3477-b473-49ec-a620-eb5785c597b5)
-
-  Example: Upload a picture of a man
-  ![image](https://github.com/user-attachments/assets/417efc31-8139-4d5b-8e81-10b5b27987d8)
-
-  Receive query results similar to the image just uploaded
-  ![image](https://github.com/user-attachments/assets/32411f71-9baf-49d8-96da-a2f5e944b2b5)
-
-- **Powered by CLIP, BLIP, and BEIT**:
-  - **CLIP**: Matches images and text by extracting semantic features.
-  - **BLIP**: Automatically generates captions for images.
-  - **BEiT**: Provides robust image feature extraction.
-
-- **User-friendly Web Interface**: 
-  - Upload an image or enter text to perform a search.
-  - Displays query results in real-time.
   
 ## Installation
 
@@ -91,3 +67,27 @@ flask run
 - Open your web browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000).
   ![image](https://github.com/user-attachments/assets/7479fd7c-78f8-407c-b872-18f59d25f05b)
 
+## Features
+
+- **Search by Text**: Enter a text query to retrieve relevant images from the database.  
+  Example: *"A baby girl is wearing a red hat"*.
+
+  <img width="1440" alt="image" src="https://github.com/user-attachments/assets/213634cb-3ff0-422a-af63-fb8c4a41e0f7" />
+
+- **Search by Image**: Upload an image to retrieve related text descriptions, captions, or tags.
+  ![image](https://github.com/user-attachments/assets/d95c3477-b473-49ec-a620-eb5785c597b5)
+
+  Example: Upload a picture of a man
+  ![image](https://github.com/user-attachments/assets/417efc31-8139-4d5b-8e81-10b5b27987d8)
+
+  Receive query results similar to the image just uploaded
+  ![image](https://github.com/user-attachments/assets/32411f71-9baf-49d8-96da-a2f5e944b2b5)
+
+- **Powered by CLIP, BLIP, and BEIT**:
+  - **CLIP**: Matches images and text by extracting semantic features.
+  - **BLIP**: Automatically generates captions for images.
+  - **BEiT**: Provides robust image feature extraction.
+
+- **User-friendly Web Interface**: 
+  - Upload an image or enter text to perform a search.
+  - Displays query results in real-time.
