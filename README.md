@@ -50,8 +50,8 @@ By combining state-of-the-art deep learning models, the system ensures high accu
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/cnmeow/InformationRetrievalSystem
-   cd InformationRetrievalSystem
+   git clone https://github.com/cnmeow/ImageRetrievalSystem
+   cd ImageRetrievalSystem
    ```
    
 2. **Install the required dependencies**:
@@ -69,7 +69,7 @@ By combining state-of-the-art deep learning models, the system ensures high accu
 
 4. **Directory structure**:
 ```bash
-   InformationRetrievalSystem/
+   ImageRetrievalSystem/
     ├── app.py                  # Main application file (Flask app)
     ├── static/                 
     │   ├── flickr30k/
