@@ -1,4 +1,9 @@
+open_clip_torch
+torch
+tqdm
+typing
+torchvision
+transformers
+torchmetrics
 tensorboardX
 torchscale
-salesforce-lavis
-open_clip_torch
