@@ -8,3 +8,5 @@ torchmetrics
 tensorboardX
 torchscale
 gdown
+Pillow
+lavis 
