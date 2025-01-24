@@ -1,0 +1,507 @@
+#divMain {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 8px 8px 0px 8px;
+  align-items: flex-start;
+  background-color: #F1F0F9;
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#divPreview {
+  display: none;
+  flex: 0 0 auto;
+  width: 500px;
+  height: 99vh;
+  
+  padding: 8px;
+  background-color: white;
+  border-radius: 8px;
+  color:rgb(13, 0, 255);
+
+}
+#controlPreview {
+  display: flex;
+  justify-content: center;
+}
+#inpPreviewRes {
+  margin-top: 10px;
+  width: 100%;
+  height: 88vh;
+  padding: 8px;
+  background-color: #F5F4FD;
+}
+#inpQueryId {
+  width: 100px;
+  height: 30px;
+  padding: 0.5rem;
+  font-size: 13px;
+  border-width: 0px;
+  margin-right: 4px;
+  background-color: #F5F4FD;
+}
+#divSearchObj {
+  flex: 0 0 auto;
+  width: 500px;
+  height: 99vh;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+#divQueryAndControlObj {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  padding: 8px 8px 0 8px;
+  align-items: flex-start;
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+}
+.divQueryObj {
+  flex: 0 0 auto;
+  width: 320px;
+  display: flex;
+  align-items: flex-start;
+  margin-right: 8px;
+  flex-direction: column;
+}
+#divDrawBBox {
+  color: black;
+  width: 320px;
+  height: 180px;
+  border-width: 1px;
+  background-size: cover;
+  background-image: url("../static/images/grid.png");
+}
+.divBBoxChangeScene {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  align-self: flex-start;
+  margin-top: 4px;
+  align-items: center;
+  justify-content: center;
+}
+.btnMove {
+  color: rgb(13, 0, 255);
+  width: 20px;
+  height: 15px;
+  padding: 0px;
+  font-size: 9px;
+  font-family: "Arial";
+  border-width: 0px;
+  background-color: rgb(225, 223, 250);
+}
+.txtInfoMove {
+
+  width: 100%;
+  text-align: center;
+  color: rgb(32, 26, 138);
+  font-size: 13px;
+  font-style: normal;
+  font-family: "Arial";
+  font-weight: 700;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.divBBoxTools {
+  flex: 0 0 auto;
+  width: 158px;
+  height: 100%;
+  position: relative;
+  align-items: flex-start;
+}
+.containLabel {
+  width: 100%;
+  display: none;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.inpExtraSearch1 {
+  color: rgb(32, 26, 138);
+  width: 155px;
+  height: 30px;
+  font-size: 12px;
+  border-width: 0px;
+  margin-bottom: 1px;
+  background-color: #F5F4FD;
+}
+.inpExtraSearch2 {
+  color: rgb(32, 26, 138);
+  width: 102px;
+  height: 30px;
+  font-size: 12px;
+  border-width: 0px;
+  margin-bottom: 1px;
+  background-color: #F5F4FD;
+}
+.inpBBoxTools {
+  cursor: pointer;
+  color: rgb(32, 26, 138);
+  width: 100%;
+  height: 28px;
+  font-size: 12px;
+  border-width: 0px;
+  margin-bottom: 4px;
+  background-color: #F5F4FD;
+}
+#containerTags {
+  display: flex;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  width: 100%;
+  height: 85px;
+  padding: 4px;
+  align-content: flex-start;
+  overflow-y: auto;
+  background-color: #F5F4FD;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+
+.itemLabel {
+  background-color: rgb(225, 223, 250);
+  color: rgb(32, 26, 138);
+  padding: 2px;
+  font-weight: 400;
+  margin: 2px;
+  cursor: pointer;
+}
+.dropDownBBoxTools {
+  flex: 0 0 auto;
+  border-radius: 4px;
+  width: 100%;
+  height: 220px;
+  display: none;
+  padding: 4px;
+  z-index: 100;
+  position: absolute;
+  align-items: flex-start;
+  flex-direction: column;
+  overflow-y: auto;
+  background-color: #F5F4FD;
+}
+.itemInDropDownBBoxTools {
+  color: rgb(32, 26, 138);
+  font-size: 13px;
+  font-style: normal;
+  margin-top: 4px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+#divControlBBox {
+  padding: 0 0 8px 8px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  align-self: flex-start;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+}
+
+.inpTopk {
+  width: 80px;
+  height: 28px;
+  padding: 0.5rem;
+  font-size: 13px;
+  border-width: 0px;
+  margin-right: 4px;
+  background-color: #F5F4FD;
+}
+.btnControl {
+  color: rgb(32, 26, 138);
+  height: 30px;
+  padding: 4px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  border-width: 0px;
+  margin-right: 4px;
+  background-color: rgb(225, 223, 250);
+  border-radius: 8px;
+}
+.btnGroup {
+  width: 58px;
+}
+.btnHideID {
+  width: 59px;
+}
+.btnSearch {
+  color: white;
+  height: 30px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 800;
+  padding-top: 4PX;
+  border-width: 0px;
+  padding-left: 10PX;
+  padding-right: 10PX;
+  padding-bottom: 4PX;
+  background-color: rgb(13, 0, 255);
+  margin-left: 2px;
+  border-radius: 8px;
+  margin-right: 30px;
+}
+.divObjAllRes {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  margin-top: 8px;
+  position: relative;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 8px;
+}
+.divObjRes {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  padding: 4px;
+  position: relative;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: white;
+  justify-content: center;
+}
+.divFrame {
+  width: 160px;
+  height: 103px;
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  flex-direction: column;
+  margin: 1px;
+  
+}
+.txtIDFrame {
+  top: 0px;
+  left: 0px;
+  color: rgb(32, 26, 138);
+  padding: 4px;
+  font-size: 13px;
+  background-color: #F5F4FD;
+  position: absolute;
+  cursor: pointer;
+}
+.imgFrame {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-color: rgb(32, 26, 138);
+  border-width: 1px;
+}
+
+.divControlPage {
+  width: 100%;
+  bottom: 0px;
+  position: sticky;
+  align-self: flex-start;
+  text-align: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  display: none;
+}
+
+.divSearchTxt {
+  flex: 0 0 auto;
+  width: 800px;
+  height: 99vh;
+  display: flex;
+  padding: 0px;
+  flex-grow: 1;
+  align-items: flex-start;
+  margin-left: 8px;
+  flex-direction: column;
+}
+#divQueryAndControlTxt {
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  flex-direction: column;
+}
+.divQueryTxt {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inpQueryTxt {
+  margin-right: 8px;
+  fill: black;
+  color: black;
+  width: 400px;
+  height: 40px;
+  font-size: 13px;
+  border-width: 0px;
+  background-color: #F5F4FD;
+  padding: 13px 20px 5px 20px !important;
+  border-radius: 16px;
+}
+.divOptionTxt {
+  width: 100%;
+  height: auto;
+  display: flex;
+  margin-top: 4px;
+  align-items: center;
+}
+.divTxtChangeScene {
+  flex: 0 0 auto;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  margin-right: 10px;
+  justify-content: center;
+}
+
+
+.divSelect {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  justify-content: flex-start;
+}
+.selectBar {
+  width: 250px;
+  height: 30px;
+}
+span{
+  margin-right: 8px;
+}
+#divTxtRes {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px;
+  position: relative;
+  flex-grow: 1;
+  margin-top: 8px;
+  overflow-y: auto;
+  align-content: flex-start;
+  background-color: white;
+}
+
+.btnNotRec {
+  color: white;
+  right: 0px;
+  width: 15px;
+  bottom: 0px;
+  height: 15px;
+  padding: 3px;
+  position: absolute;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  border-width: 0px;
+  background-color: #F29F56;
+}
+.btnRec {
+  color: white;
+  top: 0px;
+  right: 0px;
+  width: 15px;
+  height: 15px;
+  padding: 3px;
+  position: absolute;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  border-width: 0px;
+  background-color: #20AD2D;
+}
+.btnSimilarity {
+  color: white;
+  bottom: 0px;
+  left: 0px;
+  width: 15px;
+  height: 15px;
+  padding: 3px;
+  position: absolute;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  border-width: 0px;
+  background-color: #f03fb2;
+}
+
+#divTxtChangeScene {
+  width: 100%;
+  bottom: 0px;
+  position: sticky;
+  align-self: flex-start;
+  text-align: center;
+  align-items: center;
+  background-color: white;
+}
+
+
+.resize-handle {
+  width: 7px;
+  height: 7px;
+  background: red;
+  position: absolute;
+  z-index: 1000;
+  cursor: nwse-resize;
+}
+
+.delete-button {
+  cursor: pointer;
+  background-color: red;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  font-size: 12px;
+  z-index: 1000;
+}
+.rectangleDraw {
+  position: absolute;
+  border: 1px solid red;
+  z-index: 1;
+  font-size: 12px;
+  color: rgb(32, 26, 138);
+  font-weight: 700;
+  display: flex;
+  user-select: none;
+  text-shadow: 1px 1px 1px white;
+}
+input{
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+button {
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.clickedRec {
+  outline: 2px solid red;
+  
+}

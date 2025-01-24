@@ -1,0 +1,83 @@
+<html>
+
+<head>
+  <title>Select Model</title>
+  <style>
+    body {
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #F1F0F9;
+      font-size: 20px;
+      text-align: center;
+
+    }
+
+    button {
+      color: white;
+      height: 35px;
+      width: 100px;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 800;
+      padding-top: 4PX;
+      border-width: 0px;
+      padding-left: 10PX;
+      padding-right: 10PX;
+      padding-bottom: 4PX;
+      background-color: rgb(13, 0, 255);
+      margin-left: 2px;
+      margin-top: 10px;
+      border-radius: 4px;
+    }
+
+    input {
+      margin-left: 20px;
+    }
+
+    .btnclicked {
+      background-color: #f03fb2;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Select model</h1>
+  <div>
+    <input type="checkbox" name="model" value="CLIP" onclick="controlTick(0)">CLIP
+    <input type="checkbox" name="model" value="BLIP2" onclick="controlTick(1)">BLIP2
+    <input type="checkbox" name="model" value="BEIT" onclick="controlTick(2)">BEIT
+  </div>
+  <button onclick="selectModel(this)"> OK </button>
+
+  <script>
+    function selectModel(btnSearch) {
+      var useClip = document.getElementsByName('model')[0].checked,
+        useBlip2 = document.getElementsByName('model')[1].checked,
+        useBeit = document.getElementsByName('model')[2].checked;
+      btnSearch.classList.add('btnclicked');
+      setTimeout(() => {
+        btnSearch.classList.remove('btnclicked');
+      }, 200);
+      let query = {
+        'query': [useClip, useBlip2, useBeit]
+      };
+      fetch('/select_model', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(query)
+        })
+        .then(response => response.json())
+        .then(data => {
+          openSearch();
+        });
+    }
+
+    function openSearch() {
+      window.location.href = 'search';
+    }
+  </script>
+</body>
+
+</html>

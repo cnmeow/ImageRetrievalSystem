@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Annivators Search</title>
+  <meta property="og:title" content="Annivators Search" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <style data-tag="reset-style-sheet">
+    html {
+      line-height: 1.15;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      border-width: 0;
+      border-style: solid;
+    }
+
+    p,
+    li,
+    ul,
+    pre,
+    div,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    figure,
+    blockquote,
+    figcaption {
+      margin: 0;
+      padding: 0;
+    }
+
+    button {
+      background-color: transparent;
+    }
+
+    button,
+    input,
+    optgroup,
+    select,
+    textarea {
+      font-family: inherit;
+      font-size: 100%;
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    button,
+    select {
+      text-transform: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    input {
+      padding: 2px 4px;
+    }
+
+    img {
+      display: block;
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    .btnclicked {
+      background-color: #f03fb2 !important;
+    }
+  </style>
+  <style data-tag="default-style-sheet">
+    body {
+      font-weight: 400;
+      font-style: normal;
+      text-decoration: none;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/f097a992a9.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div>
+    <link href="../static/index.css" rel="stylesheet" />
+    <div id="divMain">
+      <div class="divSearchTxt">
+        <div id="divQueryAndControlTxt">
+          <!-- Current scene Txt-->
+          <div class="divQueryTxt">
+            <img src="../static/images/logo_team.png" style="height: 50px; margin-right: 10px;" />
+            <textarea placeholder="What are you looking for?" class="textarea inpQueryTxt enterToSearch"
+              id="inpTxtCurrent"></textarea>
+            <button type="button" class="btnControl button" title="Search by voice" onclick="SearchByVoice(this)">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button type="button" class="btnControl button" title="Search by image" onclick="SearchByImage(this)">
+              <i class="fa-solid fa-image"></i>
+            </button>
+
+            <input type="text" placeholder="Quantity" class="inpTopk input" id="topkTxt" />
+            <button type="button" class="btnControl button" onclick="zoomframe(0, 1)" title="Zoom out result">
+              <i class="fa-solid fa-magnifying-glass-minus"></i>
+            </button>
+            <button type="button" class="btnControl button" onclick="zoomframe(1, 1)" title="Zoom in result">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+            </button>
+            <button type="button" class="btnSearch button" onclick="Search()" title="Search">
+              Search
+            </button>
+            {% if model_list[0] %}
+            <div style="margin-left: 2px; margin-right: 2px;">
+              <input type="checkbox" name="useclip" value="CLIP" />
+              <span>CLIP</span>
+            </div>
+            {% endif %}
+
+            {% if model_list[1] %}
+            <div style="margin-left: 2px; margin-right: 2px;">
+              <input type="checkbox" name="useblip2" value="BLIP2" />
+              <span>BLIP2</span>
+            </div>
+            {% endif %}
+
+            {% if model_list[2] %}
+            <div style="margin-left: 2px; margin-right: 2px;">
+              <input type="checkbox" name="usebeit" value="BEIT" />
+              <span>BEIT</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="divObjAllRes">
+          <div class="divObjRes">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var divRes = document.getElementsByClassName('divObjAllRes');
+    var isHideID = false;
+    var ResDict = {};
+    var inpTopkTxt = document.getElementById('topkTxt'),
+      inpTxtCurrent = document.getElementById('inpTxtCurrent');
+
+    var frameWidth = 160,
+      frameHeight = 103;
+
+    function txtQuery() {
+      let useClip = document.getElementsByName('useclip')[0];
+      if (useClip) {
+        useClip = useClip.checked;
+      }
+      let useBlip2 = document.getElementsByName('useblip2')[0];
+      if (useBlip2) {
+        useBlip2 = useBlip2.checked;
+      }
+      let useBeit = document.getElementsByName('usebeit')[0];
+      if (useBeit) {
+        useBeit = useBeit.checked;
+      }
+      let queryCurrent = inpTxtCurrent.value;
+      let topk = inpTopkTxt.value;
+      return [topk, queryCurrent, useClip, useBlip2, useBeit];
+    }
+
+    /* Create div frame */
+    function createDivFrame(frame) { // frame = ./flickr30k/images/100.jpg   
+      let filename = frame.split('/').slice(-1)[0]; // 100.jpg
+      let idFrame = filename.split('.')[0]; // 100
+      let divFrame = `
+  <div class="divFrame" title="${idFrame}" style="width: ${frameWidth}px; height: ${frameHeight}px;">
+    <span class="txtIDFrame">${idFrame}</span>
+    <img src="../static/flickr30k/${filename}" class="imgFrame"/>
+  </div>
+  `;
+      return divFrame;
+    }
+
+    /* Display result  */
+    function displayRes() {
+      let containerRes = divRes[0];
+      containerRes.innerHTML = '';
+
+      let containerFrame = document.createElement('div');
+      containerFrame.className = 'divObjRes';
+
+      for (let key in ResDict) {
+        let value = ResDict[key];
+        let frame = value[0]; // score = value[1]
+        let divFrame = createDivFrame(frame);
+        containerFrame.innerHTML += divFrame;
+      }
+      containerRes.appendChild(containerFrame);
+    }
+
+    /* Click Search */
+    var btnSearch = document.getElementsByClassName('btnSearch');
+
+    function Search() {
+      let query = '';
+      query = txtQuery();
+      btnSearch[0].classList.add('btnclicked');
+      setTimeout(() => {
+        btnSearch[0].classList.remove('btnclicked');
+      }, 200);
+      let querySearch = {
+        'query': query
+      };
+      console.log(querySearch);
+
+      fetch('/process_query', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(querySearch)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          ResDict = {
+            ...data
+          };
+          displayRes();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+
+    function zoomframe(type) { // type = 0 when zoom out, type = 1 when zoom in
+      let containerRes = divRes[0];
+      let listDivFrame = containerRes.getElementsByClassName('divFrame');
+      let ratio = type === 0 ? 0.9 : 1.1;
+      frameWidth = parseInt(frameWidth * ratio);
+      frameHeight = parseInt(frameHeight * ratio);
+
+      for (let divFrame of listDivFrame) {
+        divFrame.style.width = frameWidth + 'px';
+        divFrame.style.height = frameHeight + 'px';
+      }
+    }
+
+    var onListen = false;
+    let mediaRecorder;
+    let audioChunks = [];
+
+    async function SearchByVoice(btnVoice) {
+  onListen = !onListen;
+
+  if (onListen) {
+    btnVoice.classList.add('btnclicked');
+    
+    try {
+      // Request access to the microphone
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      // Initialize the MediaRecorder with the MediaStream
+      const mediaRecorder = new MediaRecorder(stream);
+      const audioChunks = [];
+
+      mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        
+        // Send the audio to Flask
+        const formData = new FormData();
+        formData.append("audio", audioBlob, "recording.wav");
+
+        fetch('/speech_to_text', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Audio processed:', data);
+        })
+        .catch(error => {
+          console.error('Error uploading audio:', error);
+        });
+
+        // Stop all tracks in the stream
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      // Start recording
+      mediaRecorder.start();
+
+      // Save references for stopping later
+      window.mediaRecorder = mediaRecorder;
+      window.stream = stream; // Save stream to stop it later
+    } catch (error) {
+      console.error('Error accessing the microphone:', error);
+      alert('Could not access the microphone. Please check your permissions.');
+    }
+  } else {
+    btnVoice.classList.remove('btnclicked');
+    if (window.mediaRecorder) {
+      window.mediaRecorder.stop(); // Stop MediaRecorder
+    }
+    if (window.stream) {
+      window.stream.getTracks().forEach(track => track.stop()); // Stop MediaStream tracks
+    }
+  }
+}
+
+  </script>
+</body>
+
+</html>
